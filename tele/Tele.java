@@ -28,7 +28,7 @@ public class Tele extends LinearOpMode{
     double speed = 1.0;
     BNO055IMU imu;
 
-    // runOpMode(): everything in this method is the code that is run once you press "start" on the driver station
+    // runOpMode(): everything in this method is the code that is run once you press "init" on the driver station
     public void runOpMode() {
         // Initiallizes IMU
         // Note: You could just copy/paste this into your code
