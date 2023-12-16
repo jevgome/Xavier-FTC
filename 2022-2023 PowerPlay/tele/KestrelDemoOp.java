@@ -12,9 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 
 public class KestrelDemoOp extends LinearOpMode{
-    DcMotorEx m1,m2,m3,m4,arm;
+    DcMotorEx m1,m2,m3,m4, slide,pitch;
     Servo claw;
-    TouchSensor ButtonOne, ButtonTwo;
     public void runOpMode() {
         m1 = (DcMotorEx) hardwareMap.dcMotor.get("front_left");
         m2 = (DcMotorEx) hardwareMap.dcMotor.get("back_left");
@@ -26,13 +25,18 @@ public class KestrelDemoOp extends LinearOpMode{
         m3.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         m4.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        m3.setDirection(DcMotorSimple.Direction.REVERSE);
+        m1.setDirection(DcMotorSimple.Direction.REVERSE);
+        m2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        arm = (DcMotorEx) hardwareMap.dcMotor.get("Arm");
-        arm.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
-        claw = hardwareMap.servo.get("grabber");
-        ButtonOne = hardwareMap.get(TouchSensor.class, "ButtonOne");
-        ButtonTwo = hardwareMap.get(TouchSensor.class, "ButtonTwo");
+
+        slide = (DcMotorEx) hardwareMap.dcMotor.get("slide");
+        slide.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        pitch = (DcMotorEx) hardwareMap.dcMotor.get("pitch");
+        pitch.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+
+        claw = hardwareMap.servo.get("claw");
+ 
         waitForStart();
 
 
@@ -72,14 +76,9 @@ public class KestrelDemoOp extends LinearOpMode{
                 claw.setPosition(0.4);
                 telemetry.addData("Claw", "opened");
             }
-
-            if(gamepad1.left_trigger != 0 && !ButtonTwo.isPressed()) {
-                arm.setPower(gamepad1.left_trigger);
-            } else if(gamepad1.right_trigger != 0 && !ButtonOne.isPressed()) {
-                arm.setPower(-gamepad1.right_trigger);
-            } else {
-                arm.setPower(0);
-            }
+            
+            pitch.setPower(-gamepad2.left_stick_y);
+            slide.setPower(-gamepad2.right_stick_y);
         }
     }
 }
